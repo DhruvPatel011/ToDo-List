@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced To-Do List</title>
+  <link rel="stylesheet" href="todo.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+</head>
+<body>
+     
+ <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar" id="sidebar">
+ 
+    <!-- Sidebar Toggle (mobile) -->
+    <button class="sidebar-close" id="sidebarClose"><i class="fa fa-times"></i></button>
+ 
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <div class="avatar-wrap" id="avatarWrap">
+        <img class="avatar-img" id="avatarImg" src="" alt="avatar" style="display:none" />
+        <span class="avatar-initials" id="avatarInitials">JD</span>
+        <label class="avatar-upload-btn" title="Upload photo">
+          <i class="fa fa-camera"></i>
+          <input type="file" id="avatarUpload" accept="image/*" hidden />
+        </label>
+      </div>
+      <div class="profile-info">
+        <h3 class="profile-name" id="profileName">John Doe</h3>
+        <p class="profile-role" id="profileRole">Product Designer</p>
+      </div>
+      <button class="btn-edit-profile" id="btnEditProfile">
+        <i class="fa fa-pen"></i> Edit Profile
+      </button>
+    </div>
+ 
+    <!-- Stats Strip -->
+    <div class="stats-strip">
+      <div class="stat-item">
+        <span class="stat-num" id="statTotal">0</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" id="statDone">0</span>
+        <span class="stat-label">Done</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" id="statPending">0</span>
+        <span class="stat-label">Left</span>
+      </div>
+    </div>
+ 
+    <!-- Progress Bar -->
+    <div class="progress-wrap">
+      <div class="progress-header">
+        <span>Overall Progress</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+ 
+    <!-- Categories -->
+    <div class="categories-section">
+      <div class="section-header">
+        <span class="section-title">Categories</span>
+        <button class="btn-icon" id="btnAddCategory" title="Add category">
+          <i class="fa fa-plus"></i>
+        </button>
+      </div>
+      <ul class="category-list" id="categoryList"></ul>
+    </div>
+ 
+  </aside>
+ 
+  <!-- ===================== MAIN ===================== -->
+  <main class="main-content">
+ 
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="hamburger" id="hamburger"><i class="fa fa-bars"></i></button>
+      <div class="topbar-title">
+        <h1 id="currentCategoryTitle">All Tasks</h1>
+        <span id="currentCategoryCount" class="task-badge">0 tasks</span>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-wrap">
+          <i class="fa fa-search search-icon"></i>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search tasks…" />
+        </div>
+      </div>
+    </header>
+ 
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="pending">Pending</button>
+      <button class="filter-btn" data-filter="completed">Completed</button>
+      <button class="filter-btn" data-filter="high">High Priority</button>
+    </div>
+ 
+    <!-- Add Task Card -->
+    <div class="add-task-card">
+      <div class="add-task-header" id="addTaskToggle">
+        <i class="fa fa-plus-circle"></i>
+        <span>Add New Task</span>
+        <i class="fa fa-chevron-down chevron" id="addTaskChevron"></i>
+      </div>
+      <div class="add-task-body" id="addTaskBody">
+        <div class="form-row">
+          <div class="form-group flex-3">
+            <label>Task Title <span class="req">*</span></label>
+            <input type="text" id="taskTitle" placeholder="What needs to be done?" />
+          </div>
+          <div class="form-group flex-1">
+            <label>Priority</label>
+            <select id="taskPriority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group flex-3">
+            <label>Description</label>
+            <input type="text" id="taskDesc" placeholder="Optional description…" />
+          </div>
+          <div class="form-group flex-1">
+            <label>Due Date</label>
+            <input type="date" id="taskDue" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" id="btnCancelTask">Cancel</button>
+          <button class="btn-add-task" id="btnAddTask">
+            <i class="fa fa-plus"></i> Add Task
+          </button>
+        </div>
+      </div>
+    </div>
+ 
+    <!-- Task List -->
+    <div class="task-list" id="taskList"></div>
+ 
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="empty-icon"><i class="fa fa-clipboard-list"></i></div>
+      <h3>No tasks here yet</h3>
+      <p>Add your first task above to get started!</p>
+    </div>
+ 
+  </main>
+ 
+  <!-- ===================== MODALS ===================== -->
+ 
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Profile</h2>
+        <button class="modal-close" data-modal="profileModal"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="editName" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label>Role / Status</label>
+          <input type="text" id="editRole" placeholder="e.g. Product Designer" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" data-modal="profileModal">Cancel</button>
+        <button class="btn-save" id="btnSaveProfile">Save Changes</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Add/Edit Category Modal -->
+  <div class="modal-overlay" id="categoryModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="categoryModalTitle">New Category</h2>
+        <button class="modal-close" data-modal="categoryModal"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Category Name</label>
+          <input type="text" id="editCategoryName" placeholder="e.g. Health & Fitness" />
+        </div>
+        <div class="form-group">
+          <label>Icon (Font Awesome class)</label>
+          <div class="icon-picker-wrap">
+            <input type="text" id="editCategoryIcon" placeholder="e.g. fa-heart" />
+            <div class="icon-preview"><i id="iconPreview" class="fa fa-folder"></i></div>
+          </div>
+          <div class="icon-suggestions">
+            <span data-icon="fa-briefcase"><i class="fa fa-briefcase"></i></span>
+            <span data-icon="fa-book"><i class="fa fa-book"></i></span>
+            <span data-icon="fa-heart"><i class="fa fa-heart"></i></span>
+            <span data-icon="fa-dumbbell"><i class="fa fa-dumbbell"></i></span>
+            <span data-icon="fa-shopping-cart"><i class="fa fa-shopping-cart"></i></span>
+            <span data-icon="fa-plane"><i class="fa fa-plane"></i></span>
+            <span data-icon="fa-music"><i class="fa fa-music"></i></span>
+            <span data-icon="fa-code"><i class="fa fa-code"></i></span>
+            <span data-icon="fa-palette"><i class="fa fa-palette"></i></span>
+            <span data-icon="fa-gamepad"><i class="fa fa-gamepad"></i></span>
+            <span data-icon="fa-home"><i class="fa fa-home"></i></span>
+            <span data-icon="fa-film"><i class="fa fa-film"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" data-modal="categoryModal">Cancel</button>
+        <button class="btn-save" id="btnSaveCategory">Save</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Edit Task Modal -->
+  <div class="modal-overlay" id="editTaskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Task</h2>
+        <button class="modal-close" data-modal="editTaskModal"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editTaskId" />
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="editTaskTitle" placeholder="Task title" />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="editTaskDesc" placeholder="Description (optional)" />
+        </div>
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label>Priority</label>
+            <select id="editTaskPriority">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label>Due Date</label>
+            <input type="date" id="editTaskDue" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" data-modal="editTaskModal">Cancel</button>
+        <button class="btn-save" id="btnSaveTask">Save Changes</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Confirm Delete Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2>Confirm Delete</h2>
+        <button class="modal-close" data-modal="confirmModal"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Are you sure you want to delete this?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" data-modal="confirmModal">Cancel</button>
+        <button class="btn-danger" id="btnConfirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="todo.js"></script>
+</body>
+</html>
