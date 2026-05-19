@@ -680,14 +680,7 @@ function seedData() {
   const tmr = new Date(today); tmr.setDate(tmr.getDate() + 1);
   const yest = new Date(today); yest.setDate(yest.getDate() - 1);
 
-  state.tasks = [
-    { id: generateId(), title: 'Review quarterly report',    description: 'Check KPIs and update slides',     priority: 'high',   dueDate: fmt(tmr),  completed: false, categoryId: 'work',     createdAt: Date.now() },
-    { id: generateId(), title: 'Morning workout routine',    description: '30 min cardio + stretching',       priority: 'medium', dueDate: fmt(today),completed: true,  categoryId: 'personal', createdAt: Date.now() },
-    { id: generateId(), title: 'Study Chapter 5 — React',   description: 'Hooks, context, and suspense',     priority: 'high',   dueDate: fmt(today),completed: false, categoryId: 'study',    createdAt: Date.now() },
-    { id: generateId(), title: 'Watch design system talk',   description: 'Figma Config keynote recording',   priority: 'low',    dueDate: '',        completed: false, categoryId: 'video',    createdAt: Date.now() },
-    { id: generateId(), title: 'Finish landing page mockup', description: 'Hero + features section',          priority: 'high',   dueDate: fmt(yest), completed: false, categoryId: 'work',     createdAt: Date.now() },
-    { id: generateId(), title: 'Read "Deep Work"',           description: 'Cal Newport — first 3 chapters',   priority: 'low',    dueDate: '',        completed: true,  categoryId: 'personal', createdAt: Date.now() }
-  ];
+  state.tasks = [];
   saveState();
 }
 
@@ -695,7 +688,7 @@ function seedData() {
    INIT
    ===================================================== */
 loadState();
-seedData();
+//seedData();
 renderAll();
 
 // Set active filter button from state
