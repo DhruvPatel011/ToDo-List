@@ -8,8 +8,8 @@
    ===================================================== */
 let state = {
   profile: {
-    name: 'John Doe',
-    role: 'Product Designer',
+    name: 'Username',
+    role: 'Your Role',
     avatar: ''
   },
   categories: [
