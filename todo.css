@@ -1155,3 +1155,42 @@ body {
   .task-item { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
   body { background: white; }
 }
+
+/* ==========================================
+   WATERMARK (Guaranteed Visible)
+   Add this at the VERY END of todo.css
+   ========================================== */
+
+body {
+    position: relative;
+}
+
+body::after {
+    content: "Developed by Dhruv Patel";
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    z-index: 999999999;
+
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: rgba(0, 0, 0, 0.18);   /* visible on light background */
+    background: rgba(255, 255, 255, 0.65);
+    padding: 4px 10px;
+    border-radius: 20px;
+
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+/* Dark mode */
+body.dark-mode::after,
+body.theme-dark::after {
+    color: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.35);
+}
